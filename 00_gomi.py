@@ -97,7 +97,7 @@ for i in range(22):
     score = 0
     for row in test:
         answer = row[0]  # 回答
-        f = row[1]       # 特徴量yの値
+        f = row[i+1]       # 特徴量yの値
         if (f in rule) and (rule[f] == answer):
             # 規則を使った結果、正しい回答を出せれば得点。
             score = score + 1
