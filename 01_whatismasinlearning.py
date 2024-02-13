@@ -71,36 +71,42 @@ def findbest(answers):
 # 特徴量の数だけ繰り返す
 for i in range(22):
 
-    # n番目（=i）の特徴量yを使った決定木を作成。
-    # ここで feats は、特徴量yの値と「答えの列挙」をペアで格納したリスト。
-    feats = {}
-    for row in train:
-        answer = row[0]  # 回答
-        f = row[i+1]       # 特徴量y
-        if not (f in feats):
-            # キーが存在しないとき、空のリストから始める。
-            feats[f] = []
-        feats[f].append(answer)
+    for j in range(22):
 
-    #print(feats)
+        # n番目（=i）の特徴量yを使った決定木を作成。
+        # ここで feats は、特徴量yの値と「答えの列挙」をペアで格納したリスト。
+        feats = {}
+        for row in train:
+            answer = row[0]  # 回答
+            f1 = row[i+1]       # 特徴量y
+            f2 = row[j+1]       # 特徴量y
+            f = f1 + "," + f2         # 特徴量yの値と、特徴量yの値を連結したもの。
+            if not (f in feats):
+                # キーが存在しないとき、空のリストから始める。
+                feats[f] = []
+            feats[f].append(answer)
 
-    # 各特徴量の取りうる値別の正解（つまり答えの列挙の中で、最も数が多いもの）を探し、この特徴量のルールとする。
-    rule = {}
-    for f in feats.keys():
-        #print("key = ", f, "dataLengs = ", len(feats[f]), "best = ", findbest(feats[f]))
-        rule[f] = findbest(feats[f])
+        #print(feats)
 
-    print("この特徴量", label[i], "\nが取りうる値別の正解は = ", rule)
+        # 各特徴量の取りうる値別の正解（つまり答えの列挙の中で、最も数が多いもの）を探し、この特徴量のルールとする。
+        rule = {}
+        for f in feats.keys():
+            #print("key = ", f, "dataLengs = ", len(feats[f]), "best = ", findbest(feats[f]))
+            rule[f] = findbest(feats[f])
 
-    # できた決定木の正しさをテストデータを用いて測定
+        print("この特徴量", label[i], "\nが取りうる値別の正解は = ", rule)
 
-    score = 0
-    for row in test:
-        answer = row[0]  # 回答
-        f = row[i+1]       # 特徴量yの値
-        if (f in rule) and (rule[f] == answer):
-            # 規則を使った結果、正しい回答を出せれば得点。
-            score = score + 1
+        # できた決定木の正しさをテストデータを用いて測定
 
-    print("正しさ指数は = ", score / len(test) * 100, "%")
-    print("\n")
+        score = 0
+        for row in test:
+            answer = row[0]  # 回答
+            f1 = row[i+1]       # 特徴量yの値
+            f2 = row[j+1]       # 特徴量yの値
+            f = f1 + "," + f2         # 特徴量yの値と、特徴量yの値を連結したもの。
+            if (f in rule) and (rule[f] == answer):
+                # 規則を使った結果、正しい回答を出せれば得点。
+                score = score + 1
+
+        print("正しさ指数は = ", score / len(test) * 100, "%")
+        print("\n")
