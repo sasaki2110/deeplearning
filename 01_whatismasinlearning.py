@@ -1,3 +1,5 @@
+# これは、ニューラルネットワークの前に、決定木を使って基本てきな学習を覚える
+
 import csv
 with open("./mushroom/agaricus-lepiota.data") as fp:
     table = list(csv.reader(fp))
